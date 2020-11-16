@@ -12,6 +12,18 @@ app.use(express.static('public'));
 app.get('/api/quotes/random', (req, res, next) => {
     res.send({quote: getRandomElement(quotes)})
 })
+// Get all quotes for unspecified author or all of the quotes from a specfic author
+app.get('/api/quotes', (req, res, next) => {
+    const quotesFiltered = quotes.filter(author => {
+        return author.person === req.query.person
+    })
+    if (req.query.person) {
+        res.send({quotes: quotesFiltered})
+    } 
+    else {
+        res.send({quotes})
+    }
+})
 
 app.listen(PORT)
 console.log(`Listening on port: ${PORT}`)
